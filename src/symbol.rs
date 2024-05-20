@@ -54,7 +54,7 @@ pub fn parse_advanced(raw_symbol: String, type_hint: Option<SymbolType>) -> Symb
         if let Some(nextVal) = iter.peek() {
             if FUTURE_MONTHS.contains(&curr) && nextVal.is_digit(10) {
                 results.push(("symbol".to_owned(), curr_value[0..(curr_value.len() - 2)].to_owned()))
-                curr_value = "".to_owned();
+
             }
         }
     }
