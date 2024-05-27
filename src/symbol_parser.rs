@@ -7,8 +7,8 @@ use crate::symbol::{self, Symbol};
 
 #[derive(Debug)]
 enum PutCall {
-    PUT,
-    CALL
+    Put,
+    Call
 }
 
 #[derive(pest_derive::Parser)]
@@ -81,7 +81,7 @@ fn reverse(str: String) -> String {
     str.chars().rev().collect()
 }
 
-fn find_by_rule<'a>(symbol_tokens: &'a Vec<Pair<'a, Rule>>, rule: Rule) -> Option<&Pair<'a, Rule>> {
+fn find_by_rule<'a>(symbol_tokens: &'a [Pair<'a, Rule>], rule: Rule) -> Option<&Pair<'a, Rule>> {
     symbol_tokens.iter().find(|sym| sym.as_rule() == rule)
 }
 
@@ -92,8 +92,8 @@ fn parse_put_call(token: &Pair<Rule>) -> Result<PutCall, ()> {
 
     for inner_token in token.to_owned().into_inner() {
         match inner_token.as_rule() {
-            Rule::put => { return Ok(PutCall::PUT) },
-            Rule::call => { return Ok(PutCall::CALL) }
+            Rule::put => { return Ok(PutCall::Put) },
+            Rule::call => { return Ok(PutCall::Call) }
             _ => {}
         }
     }

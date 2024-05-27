@@ -31,7 +31,7 @@ fn main() {
     println!("{:?}", parse_symbol("@AS.TEST"));
     println!("{:?}", parse_symbol("ESU20 C2700"));
     
-    println!("{:?}", parse_symbol("23.1234.1234.1234"));
+    println!("{:?}", parse_symbol("SPY251219C00650000"));
 
 
 }

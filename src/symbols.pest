@@ -18,17 +18,19 @@ future_symbol       = { (symbol_modifier)? ~ ((individual_contract ~ continuous_
 
 // FUTURE OPTIONS = [Option root][Month code][Year code][Alias extension]<space>[Put/Call code][Strike Code]
 // PUT and CALL spelt backwards
-put = { "P" | "PUT" }
-call = { "C" | "LLAC" }
+put                   = { "P" | "PUT" }
+call                  = { "C" | "LLAC" }
 put_call              = { put | call }
 strike_code           = { ASCII_DIGIT+ }
 future_options_symbol = { strike_code ~ put_call ~ (symbol_modifier)? ~ future_symbol }
 
 // Stock Option = [Option Root]<space>[YYMMDD Expiration Date][C or P][Strike Price]
-strike_price         = { ASCII_DIGIT* ~ "."? ~ ASCII_DIGIT+ }
-date                 = { ASCII_DIGIT{6} }
+strike_price_with_decimal = _{ ASCII_DIGIT* ~ "."? ~ ASCII_DIGIT+ }
+strike_price              =  { strike_price_with_decimal | ASCII_DIGIT+ }
+date                      =  { ASCII_DIGIT{6} }
+
 stock_options_symbol = { strike_price ~ put_call ~ date ~ root_sym }
 
 unknown_symbol = { symbol_modifier? ~ root_sym }
 
-symbol = _{ SOI ~ (future_options_symbol | stock_options_symbol | future_symbol | unknown_symbol ) ~ EOI }
+symbol = _{ SOI ~ (future_options_symbol | stock_options_symbol | future_symbol | unknown_symbol) ~ EOI }
