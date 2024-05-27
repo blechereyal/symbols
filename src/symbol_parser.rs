@@ -1,9 +1,10 @@
 
-use std::future::{self, Future};
+use std::{future::{self, Future}};
 
 use pest::{iterators::{Pair, Pairs}, Parser};
 
 use crate::symbol::{self, Symbol};
+use wasm_bindgen::prelude::*;
 
 #[derive(Debug)]
 enum PutCall {
@@ -75,6 +76,16 @@ pub fn parse_symbol(raw_symbol: &str) -> Result<ParseResult, ()> {
         }
     }
     Err(())
+}
+
+
+#[wasm_bindgen]
+pub fn parse_symbol_js(raw_symbol: &str) -> String {
+    let result = parse_symbol(raw_symbol);
+    match result {
+        Ok(result) => format!("{:?}", result),
+        Err(_) => "undefined symbol".to_owned()
+    } 
 }
 
 fn reverse(str: String) -> String {
