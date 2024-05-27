@@ -1,4 +1,4 @@
-use symbols::symbol_parser::parse_symbol;
+use symbols::{symbol::Symbol, symbol_parser::parse_symbol};
 fn main() {
     // let sym = Symbol::parse("AAPL".to_owned(), None);
     // let sym2 = Symbol::parse("ASM4".to_owned(), None);
@@ -33,5 +33,6 @@ fn main() {
     
     println!("{:?}", parse_symbol("SPY251219C00650000"));
 
+    println!("{:?}", Symbol { original_symbol: "AA".to_owned(), ..Symbol::default() });
 
 }

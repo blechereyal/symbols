@@ -1,5 +1,5 @@
 
-use std::{future::{self, Future}};
+use std::{collections::HashMap, future::{self, Future}};
 
 use pest::{iterators::{Pair, Pairs}, Parser};
 
@@ -7,7 +7,7 @@ use crate::symbol::{self, Symbol};
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug)]
-enum PutCall {
+pub enum PutCall {
     Put,
     Call
 }
@@ -18,34 +18,38 @@ pub struct SymbolParser;
 
 #[derive(Debug)]
 pub struct UnknownSymbol {
-    root_symbol: String,
-    symbol_modifier: Option<String>
+    pub root_symbol: String,
+    pub symbol_modifier: Option<String>,
+    pub original_symbol: String,
 }
 
 #[derive(Debug)]
 pub struct FutureSymbol {
-    continuous: bool,
-    root_symbol: String,
-    month: Option<String>,
-    year: Option<String>,
-    symbol_modifier: Option<String>
+    pub continuous: bool,
+    pub root_symbol: String,
+    pub month: Option<String>,
+    pub year: Option<String>,
+    pub symbol_modifier: Option<String>,
+    pub original_symbol: String,
 }
 
 #[derive(Debug)]
 pub struct StockOptionsSymbol {
-    root_symbol: String,
-    strike_price: String,
-    put_call: PutCall,
-    date: String
+    pub root_symbol: String,
+    pub strike_price: String,
+    pub put_call: PutCall,
+    pub date: String,
+    pub original_symbol: String,
 }
 
 
 #[derive(Debug)]
 pub struct FutureOptionsSymbol {
-    future_symbol: FutureSymbol,
-    strike_code: String,
-    put_call: PutCall,
-    symbol_modifier: Option<String>
+    pub future_symbol: FutureSymbol,
+    pub strike_code: String,
+    pub put_call: PutCall,
+    pub symbol_modifier: Option<String>,
+    pub original_symbol: String,
 }
 
 
@@ -58,6 +62,7 @@ pub enum ParseResult {
     Unused,
 
 }
+
 
 pub fn parse_symbol(raw_symbol: &str) -> Result<ParseResult, ()> {
     let reversed_symbol = raw_symbol.chars().rev().collect::<String>();
@@ -130,6 +135,7 @@ fn parse_individual_contact(token: &Pair<Rule>) -> Result<IndividualContract, ()
 }
 
 fn parse_tokens(tokens: Pair<Rule>) -> Result<ParseResult, ()> {
+    let original_symbol = tokens.as_span().as_str().to_owned();
     match tokens.as_rule() {
         Rule::unknown_symbol => {
             let symbol_tokens: Vec<Pair<Rule>> = tokens.into_inner().collect();
@@ -143,6 +149,7 @@ fn parse_tokens(tokens: Pair<Rule>) -> Result<ParseResult, ()> {
             Ok(ParseResult::UnknownSym(UnknownSymbol {
                 symbol_modifier: symbol_modifier.map(|pair| reverse(pair.as_span().as_str().to_owned())),
                 root_symbol: reverse(root_symbol.unwrap().as_span().as_str().to_owned()),
+                original_symbol
             }))
         },
         Rule::stock_options_symbol => {
@@ -162,7 +169,8 @@ fn parse_tokens(tokens: Pair<Rule>) -> Result<ParseResult, ()> {
                 root_symbol: reverse(root_symbol.unwrap().as_span().as_str().to_owned()),
                 strike_price: reverse(strike_price.unwrap().as_span().as_str().to_owned()),
                 date: reverse(date.unwrap().as_span().as_str().to_owned()),
-                put_call
+                put_call,
+                original_symbol
             }))
         },
         Rule::future_symbol => {
@@ -184,6 +192,7 @@ fn parse_tokens(tokens: Pair<Rule>) -> Result<ParseResult, ()> {
                     year: Some(year), 
                     month: Some(future_month),
                     symbol_modifier: symbol_modifier.map(|pair| reverse(pair.as_span().as_str().to_owned())),
+                    original_symbol
                 }))
             } else {
                 if root_symbol.is_none() || continuous_modifier.is_none() {
@@ -196,6 +205,7 @@ fn parse_tokens(tokens: Pair<Rule>) -> Result<ParseResult, ()> {
                     year: None, 
                     month: None,
                     symbol_modifier: symbol_modifier.map(|pair| reverse(pair.as_span().as_str().to_owned())),
+                    original_symbol
                 }))
             }
 
@@ -221,6 +231,7 @@ fn parse_tokens(tokens: Pair<Rule>) -> Result<ParseResult, ()> {
                     strike_code: reverse(strike_code.unwrap().as_span().as_str().to_owned()),
                     put_call,
                     symbol_modifier: symbol_modifier.map(|pair| reverse(pair.as_span().as_str().to_owned())),
+                    original_symbol
                 }))
             } else {
                 Err(())
