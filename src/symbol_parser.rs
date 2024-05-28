@@ -85,11 +85,10 @@ pub fn parse_symbol(raw_symbol: &str) -> Result<ParseResult, ()> {
 
 
 #[wasm_bindgen]
-pub fn parse_symbol_js(raw_symbol: &str) -> Symbol {
-    let result = parse_symbol(raw_symbol);
-    match result {
-        Ok(result) => result.into(),
-        Err(_) => ParseResult::Unused.into()
+pub fn parse_symbol_js(raw_symbol: &str) -> Result<Symbol, String> {
+    match parse_symbol(raw_symbol) {
+        Ok(result) => Ok(result.into()),
+        Err(_) => Err("Could not parse symbol".to_owned())
     } 
 }
 
