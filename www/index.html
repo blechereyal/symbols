@@ -25,7 +25,7 @@
         <blockquote v-if="symbolInfo">
           <dl>
             <dt>Symbol Type</dt>
-            <dd>{{ symbolInfo.symbol_type }}</dd>
+            <dd>{{ SYMBOL_TYPE_MAPPING[symbolInfo.symbol_type] }}</dd>
             <dt>Original Symbol</dt>
             <dd>{{ symbolInfo.original_symbol }}</dd>
             <dt>Underlying Symbol</dt>
@@ -38,7 +38,7 @@
               <dt>Strike Price</dt>
               <dd>{{ symbolInfo.option_contract.strike_price }} </dt>
               <dt>Put/Call</dt>
-              <dd>{{ symbolInfo.option_contract.put_call }} </dt>
+              <dd>{{ PUT_CALL_MAPPING[symbolInfo.option_contract.put_call] }} </dt>
               <dt>Option Date</dt>
               <dd>{{ symbolInfo.option_contract.date }} </dt>
             </template>

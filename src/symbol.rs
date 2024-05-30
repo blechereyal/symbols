@@ -4,7 +4,6 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::symbol_parser::{ParseResult, PutCall};
 
-
 #[wasm_bindgen]
 #[derive(Debug, Clone)]
 pub enum SymbolType {

@@ -26,14 +26,24 @@ function parseOptionContract(option_contract) {
 
 const { createApp, ref } = Vue
 
+const SYMBOL_TYPE_MAPPING = {
+    0: 'Stocks',
+    1: 'Futures',
+    2: 'Future Options',
+    3: 'Stock Options',
+    4: 'Unknown Type'
+}
+
+const PUT_CALL_MAPPING = {
+    0: 'PUT',
+    1: 'CALL'
+}
+
 createApp({
   setup() {
     const symbolInfo = ref(null);
     const symbol = ref("");
     const onSubmit = (e) => {
-        // if (symbolInfo.value) {
-        //     symbolInfo.free()
-        // }
         performance.mark('startParse');
         let info = symbols.parse_symbol_js(symbol.value);
         symbolInfo.value = {
@@ -51,7 +61,9 @@ createApp({
     return {
         onSubmit,
         symbolInfo,
-        symbol
+        symbol,
+        SYMBOL_TYPE_MAPPING,
+        PUT_CALL_MAPPING
     }
   }
 }).mount('#app')

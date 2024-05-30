@@ -1,9 +1,8 @@
 
-use std::{collections::HashMap, future::{self, Future}};
 
-use pest::{iterators::{Pair, Pairs}, Parser};
+use pest::{iterators::Pair, Parser};
 
-use crate::symbol::{self, Symbol};
+use crate::symbol::Symbol;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug)]
