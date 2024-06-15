@@ -63,6 +63,7 @@ pub enum ParseResult {
 }
 
 
+
 pub fn parse_symbol(raw_symbol: &str) -> Result<ParseResult, ()> {
     let reversed_symbol = raw_symbol.chars().rev().collect::<String>();
 
@@ -84,9 +85,12 @@ pub fn parse_symbol(raw_symbol: &str) -> Result<ParseResult, ()> {
 
 
 #[wasm_bindgen]
-pub fn parse_symbol_js(raw_symbol: &str) -> Result<Symbol, String> {
+pub fn parse_symbol_js(raw_symbol: &str) -> Result<JsValue, String> {
     match parse_symbol(raw_symbol) {
-        Ok(result) => Ok(result.into()),
+        Ok(result) => {
+            let symbol: Symbol = result.into();
+            serde_wasm_bindgen::to_value(&symbol).map_err(|_| "Could not convert symbol to json".into())
+        },
         Err(_) => Err("Could not parse symbol".to_owned())
     } 
 }

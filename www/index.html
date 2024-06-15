@@ -22,7 +22,7 @@
       <blockquote v-if="symbolInfo">
         <dl>
           <dt>Symbol Type</dt>
-          <dd>{{ SYMBOL_TYPE_MAPPING[symbolInfo.symbol_type] }}</dd>
+          <dd>{{ symbolInfo.symbol_type }}</dd>
           <dt>Original Symbol</dt>
           <dd>{{ symbolInfo.original_symbol }}</dd>
           <dt>Underlying Symbol</dt>
@@ -35,17 +35,15 @@
             <dt>Strike Price</dt>
             <dd>{{ symbolInfo.option_contract.strike_price }} </dt>
             <dt>Put/Call</dt>
-            <dd>{{ PUT_CALL_MAPPING[symbolInfo.option_contract.put_call] }} </dt>
+            <dd>{{ symbolInfo.option_contract.put_call }} </dt>
             <dt>Option Date</dt>
             <dd>{{ symbolInfo.option_contract.date }} </dt>
           </template>
           <template v-if="symbolInfo.future_contract">
             <dt>Continuous</dt>
             <dd>{{ symbolInfo.future_contract.continuous }} </dt>
-            <dt>Month</dt>
-            <dd>{{ symbolInfo.future_contract.month }} </dt>
-            <dt>Year</dt>
-            <dd>{{ symbolInfo.future_contract.year }} </dt>
+            <dt>Future Expiration</dt>
+            <dd>{{ symbolInfo.future_contract.expiration }} </dt>
           </template>
           <dt>JSON</dt>
           <dd>

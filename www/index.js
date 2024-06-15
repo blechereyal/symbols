@@ -9,6 +9,7 @@ function parseFutureContract(future_contract) {
     continuous: future_contract.continuous,
     month: future_contract.month,
     year: future_contract.year,
+    expiration: future_contract.expiration
   };
 }
 
