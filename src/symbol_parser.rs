@@ -133,7 +133,7 @@ fn parse_individual_contact(token: &Pair<Rule>) -> Result<IndividualContract, ()
 }
 
 fn parse_tokens(tokens: Pair<Rule>) -> Result<ParseResult, ()> {
-    let original_symbol = tokens.as_span().as_str().to_owned();
+    let original_symbol = reverse(tokens.as_span().as_str().into());
     match tokens.as_rule() {
         Rule::unknown_symbol => {
             let symbol_tokens: Vec<Pair<Rule>> = tokens.into_inner().collect();
