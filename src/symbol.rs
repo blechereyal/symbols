@@ -1,9 +1,8 @@
-use std::future::{self, Future};
-
 use chrono::prelude::*;
+use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::wasm_bindgen;
-
+use rust_decimal::prelude::*;
 use crate::symbol_parser::{ParseResult, PutCall};
 const FUTURE_MONTHS: [&'static str; 12] =
     ["F", "G", "H", "J", "K", "M", "N", "Q", "U", "V", "X", "Z"];
@@ -27,7 +26,7 @@ pub enum PutOrCall {
 
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct OptionContract {
-    pub strike_price: String,
+    pub strike_price: Decimal,
     pub put_call: PutOrCall,
     pub date: Option<NaiveDate>,
 }
@@ -87,6 +86,24 @@ pub fn parse_future_expiration(year: &Option<String>, month: &Option<String>) ->
     }
 }
 
+// Strike price, as the price x 1000, front padded with 0s to 8 digits
+pub fn parse_strike_price(strike_price: String) -> Decimal {
+    if strike_price.contains('.') {
+        Decimal::from_str(&strike_price).expect("REASON")
+    } else { 
+        // TODO: expect
+        let num = strike_price.parse::<i64>().expect("String");
+        match strike_price.len() {
+            8 => {
+                Decimal::new(num, 3)
+            }, 
+            _ => {
+                Decimal::new(num, 0)
+            }
+        }
+    }
+}
+
 impl From<ParseResult> for Symbol {
     fn from(val: ParseResult) -> Self {
         match val {
@@ -102,7 +119,7 @@ impl From<ParseResult> for Symbol {
                     NaiveDate::parse_from_str(&date, "%y%m%d").expect("undefined date format");
 
                 let option_contract = OptionContract {
-                    strike_price: symbol.strike_price,
+                    strike_price: parse_strike_price(symbol.strike_price),
                     put_call: match symbol.put_call {
                         PutCall::Put => PutOrCall::Put,
                         PutCall::Call => PutOrCall::Call,
@@ -137,7 +154,7 @@ impl From<ParseResult> for Symbol {
             }
             ParseResult::FutureOptionsSym(symbol) => {
                 let option_contract = OptionContract {
-                    strike_price: symbol.strike_code,
+                    strike_price: parse_strike_price(symbol.strike_code),
                     put_call: match symbol.put_call {
                         PutCall::Put => PutOrCall::Put,
                         PutCall::Call => PutOrCall::Call,
