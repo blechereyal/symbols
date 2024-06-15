@@ -1,10 +1,9 @@
 use chrono::prelude::*;
-use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::wasm_bindgen;
 use rust_decimal::prelude::*;
 use crate::symbol_parser::{ParseResult, PutCall};
-const FUTURE_MONTHS: [&'static str; 12] =
+const FUTURE_MONTHS: [&str; 12] =
     ["F", "G", "H", "J", "K", "M", "N", "Q", "U", "V", "X", "Z"];
 #[wasm_bindgen]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -16,7 +15,6 @@ pub enum SymbolType {
     Unknown,
 }
 
-#[wasm_bindgen(getter_with_clone)]
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub enum PutOrCall {
     #[default]

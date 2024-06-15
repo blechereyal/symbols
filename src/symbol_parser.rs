@@ -62,8 +62,6 @@ pub enum ParseResult {
 
 }
 
-
-
 pub fn parse_symbol(raw_symbol: &str) -> Result<ParseResult, ()> {
     let reversed_symbol = raw_symbol.chars().rev().collect::<String>();
 
@@ -210,8 +208,6 @@ fn parse_tokens(tokens: Pair<Rule>) -> Result<ParseResult, ()> {
                     original_symbol
                 }))
             }
-
-            Err(())
         },
         Rule::future_options_symbol => {
             let symbol_tokens: Vec<Pair<Rule>> = tokens.into_inner().collect();
