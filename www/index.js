@@ -1,5 +1,5 @@
 import * as symbols from "symbols";
-
+window.parse_symbol_js = symbols.parse_symbol_js;
 function parseFutureContract(future_contract) {
   if (!future_contract) {
     return null;
@@ -52,15 +52,7 @@ createApp({
       // }
       try {
         performance.mark("startParse");
-        let info = symbols.parse_symbol_js(symbol.value);
-        symbolInfo.value = {
-          symbol_type: info.symbol_type,
-          original_symbol: info.original_symbol,
-          underlying_symbol: info.underlying_symbol,
-          symbol_modifier: info.symbol_modifier,
-          option_contract: parseOptionContract(info.option_contract),
-          future_contract: parseFutureContract(info.future_contract),
-        };
+        symbolInfo.value = symbols.parse_symbol_js(symbol.value);
         performance.mark("endParse");
 
         console.info(
@@ -72,8 +64,14 @@ createApp({
         error.value = e.toString();
       }
     };
+
+    const useExample = (e) => {
+      symbol.value = e.target.innerText;
+      onSubmit()
+    }
     return {
         onSubmit,
+        useExample,
         symbolInfo,
         symbol,
         SYMBOL_TYPE_MAPPING,

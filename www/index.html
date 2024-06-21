@@ -19,6 +19,14 @@
           <input type="submit" value="Parse" />
         </fieldset>
       </form>
+      <div class="grid">
+        <div><h3>Examples</h3></div>
+        
+        <button v-on:click="useExample" data-tooltip="SPDR S&P 500 ETF Trust Dec 2025 650.000 call">SPY251219C00650000</button>
+        <button v-on:click="useExample" data-tooltip="E-Mini S&P 500 September 2020 2700 Call">ESU20 C2700</button>
+        <button v-on:click="useExample" data-tooltip="Apple Stock">AAPL</button>
+        
+      </div>
       <blockquote v-if="symbolInfo">
         <dl>
           <dt>Symbol Type</dt>
