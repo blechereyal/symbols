@@ -1,0 +1,15 @@
+[package]
+name = "symbols_ruby"
+version = "0.1.0"
+edition = "2021"
+authors = ["Eyal Blecher <blechereyal@gmail.com>"]
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+magnus = { version = "0.4" }
+rust_decimal = "1.35.0"
+serde_magnus = "0.8.1"
+symbols = { version = "0.1.0", path = "../../.." }

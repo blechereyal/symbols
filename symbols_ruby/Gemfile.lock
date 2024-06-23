@@ -1,0 +1,39 @@
+PATH
+  remote: .
+  specs:
+    symbols_ruby (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    diff-lcs (1.5.1)
+    rake (13.2.1)
+    rake-compiler (1.2.7)
+      rake
+    rb_sys (0.9.97)
+    rspec (3.13.0)
+      rspec-core (~> 3.13.0)
+      rspec-expectations (~> 3.13.0)
+      rspec-mocks (~> 3.13.0)
+    rspec-core (3.13.0)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-support (3.13.1)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  rake (~> 13.0)
+  rake-compiler
+  rb_sys
+  rspec (~> 3.0)
+  symbols_ruby!
+
+BUNDLED WITH
+   2.4.6
