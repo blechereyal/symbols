@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+
+<head>
+  <meta charset="utf-8">
+  <title>Symbols</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+
+  <body>
+    <main id="app" class="container">
+      <h1>Parse symbols</h1>
+      <form v-on:submit.prevent="onSubmit">
+        <fieldset role="group">
+          <input v-model="symbol" id="symbol" type="text" placeholder="Type your symbol">
+          <input type="submit" value="Parse" />
+        </fieldset>
+      </form>
+      <div class="grid">
+        <div><h3>Examples</h3></div>
+        
+        <button v-on:click="useExample" data-tooltip="SPDR S&P 500 ETF Trust Dec 2025 650.000 call">SPY251219C00650000</button>
+        <button v-on:click="useExample" data-tooltip="E-Mini S&P 500 September 2020 2700 Call">ESU20 C2700</button>
+        <button v-on:click="useExample" data-tooltip="Apple Stock">AAPL</button>
+        
+      </div>
+      <blockquote v-if="symbolInfo">
+        <dl>
+          <dt>Symbol Type</dt>
+          <dd>{{ symbolInfo.symbol_type }}</dd>
+          <dt>Original Symbol</dt>
+          <dd>{{ symbolInfo.original_symbol }}</dd>
+          <dt>Underlying Symbol</dt>
+          <dd>{{ symbolInfo.underlying_symbol }}</dd>
+          <template v-if="symbolInfo.symbol_modifier">
+            <dt>Symbol Modifier</dt>
+            <dt>{{ symbolInfo.symbol_modifier}} </dt>
+          </template>
+          <template v-if="symbolInfo.option_contract">
+            <dt>Strike Price</dt>
+            <dd>{{ symbolInfo.option_contract.strike_price }} </dt>
+            <dt>Put/Call</dt>
+            <dd>{{ symbolInfo.option_contract.put_call }} </dt>
+            <dt>Option Date</dt>
+            <dd>{{ symbolInfo.option_contract.date }} </dt>
+          </template>
+          <template v-if="symbolInfo.future_contract">
+            <dt>Continuous</dt>
+            <dd>{{ symbolInfo.future_contract.continuous }} </dt>
+            <dt>Future Expiration</dt>
+            <dd>{{ symbolInfo.future_contract.expiration }} </dt>
+          </template>
+          <dt>JSON</dt>
+          <dd>
+            <pre><code>{{ JSON.stringify(symbolInfo, undefined, 2) }}</code></pre>
+          </dd>
+        </dl>
+      </blockquote>
+      <blockquote style="color: crimson;" v-if="error">
+        {{error}}
+      </blockquote>
+    </main>
+  </body>
+  <noscript>This page contains webassembly and javascript content, please enable javascript in your browser.</noscript>
+  <script src="./bootstrap.js"></script>
+</body>
+
+</html>
